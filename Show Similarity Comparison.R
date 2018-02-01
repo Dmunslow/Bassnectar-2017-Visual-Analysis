@@ -31,7 +31,10 @@ festival_set_data$show_id <- 1:length(festival_set_data$show)
 
 ## Create empty rows values for most similar show and number of songs shared
 festival_set_data$most_similar_show <- 'NA'
-festival_set_data$songs_in_common <- 0
+festival_set_data$songs_in_common_most_similar <- 0
+
+festival_set_data$least_similar_show <- 'NA'
+festival_set_data$songs_in_common_least_similar <- 100
 
 ## initiate for loop
 
@@ -59,12 +62,21 @@ for(i in 1:length(festival_set_data$show)){
         
         num_songs_in_common <- length(song_list_primary[song_list_primary %in% comparison_song_list])
         
-        if(num_songs_in_common > festival_set_data$songs_in_common[festival_set_data$show_id == i]){
+        if(num_songs_in_common > festival_set_data$songs_in_common_most_similar[festival_set_data$show_id == i]){
             
             ## if the number of songs is greater than the previous max, then replace with new show info
-            festival_set_data$songs_in_common[i] <- num_songs_in_common
+            festival_set_data$songs_in_common_most_similar[i] <- num_songs_in_common
             festival_set_data$most_similar_show[i] <- comparison_show
         }
+        
+        if(num_songs_in_common < festival_set_data$songs_in_common_least_similar[festival_set_data$show_id == i]){
+            
+            ## if the number of songs is greater than the previous max, then replace with new show info
+            festival_set_data$songs_in_common_least_similar[i] <- num_songs_in_common
+            festival_set_data$least_similar_show[i] <- comparison_show
+        } 
+       
+     
         
     }
 }
